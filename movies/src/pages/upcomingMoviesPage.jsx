@@ -3,7 +3,7 @@ import { getUpcomingMovies } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage';
 import { useQuery } from '@tanstack/react-query';
 import Spinner from '../components/spinner';
-import AddToFavoritesIcon from '../components/cardIcons/addToFavorites';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const UpcomingMoviesPage = (props) => {
   const { data, error, isPending, isError  } = useQuery({
@@ -26,7 +26,7 @@ const UpcomingMoviesPage = (props) => {
       title="Upcoming Movies"
       movies={upcomingMovies}
       action={(movie) => {
-        return <AddToFavoritesIcon movie={movie} />
+        return <PlaylistAddIcon movie={movie} />
       }}
     />
   );

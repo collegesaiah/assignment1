@@ -30,6 +30,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
+      <CssBaseline />
         <BrowserRouter>
           <SiteHeader />
           <MoviesContextProvider>

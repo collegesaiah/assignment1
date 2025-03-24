@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -9,7 +10,8 @@ import Fab from "@mui/material/Fab";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews"
-
+import { getCredits } from "../../api/tmdb-api";
+import Spinner from "../spinner";
 
 const root = {
     display: "flex",
@@ -24,6 +26,16 @@ const chip = { margin: 0.5 };
 const MovieDetails = ({ movie }) => {  // Don't miss this!
   const [drawerOpen, setDrawerOpen] = useState(false);
   
+  const { data: credits, error, isPending, isError } = useQuery({
+    queryKey: ["credits", movie.id],
+    queryFn: () => getCredits(movie.id),
+  });
+
+  if (isPending) return <Spinner />;
+  if (isError) return <Typography variant="h6" color="error">{error.message}</Typography>;
+
+  const cast = credits?.cast?.slice(0, 5);
+  const directors = credits?.crew?.filter(member => member.job === "Director");
 
   return (
     <>
@@ -72,6 +84,24 @@ const MovieDetails = ({ movie }) => {  // Don't miss this!
         {movie.production_countries.map((g) => (
           <li key={g.name}>
             <Chip label={g.name} sx={{...chip}} />
+          </li>
+        ))}
+      </Paper>
+
+      <Typography variant="h5" component="h3" sx={{ marginTop: 2 }}>Cast</Typography>
+      <Paper component="ul" sx={{...root}}>
+        {cast?.map((actor) => (
+          <li key={actor.id}>
+            <Chip label={`${actor.name} as ${actor.character}`} sx={{...chip}} />
+          </li>
+        ))}
+      </Paper>
+
+      <Typography variant="h5" component="h3" sx={{ marginTop: 2 }}>Director(s)</Typography>
+      <Paper component="ul" sx={{...root}}>
+        {directors?.map((director) => (
+          <li key={director.id}>
+            <Chip label={director.name} sx={{...chip}} color="secondary" />
           </li>
         ))}
       </Paper>

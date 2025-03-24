@@ -22,9 +22,6 @@ const MovieHeader = (props) => {
             margin: 0,
         }}
       >
-      <IconButton aria-label="go back" onClick={() => navigate(-1)} >
-        <ArrowBackIcon color="primary" fontSize="large" />
-      </IconButton>
 
       <Typography variant="h4" component="h3">
         {movie.title}
@@ -32,12 +29,7 @@ const MovieHeader = (props) => {
           <HomeIcon color="primary" />
         </a>
         <br />
-        <span sx={{ fontSize: "1.5rem" }}>{`   "${movie.tagline}"`} </span>
       </Typography>
-
-      <IconButton aria-label="go forward" onClick={() => navigate(+1) } >
-        <ArrowForwardIcon color="primary" fontSize="large" />
-      </IconButton>
     </Paper>
   );
 };
